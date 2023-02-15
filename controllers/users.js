@@ -33,8 +33,8 @@ async function logUser(req, res) {
         if (!isPasswordOk) {
             res.status(400).send({ message: "Mot de passe incorect" })// bad request
         }
-        const token = createToken(email)
-        res.status(200).send({ userId: user?._id, token: token })// la requête a été réussie
+        const token = createToken(email, user._id)
+        res.status(200).send({ userId: user._id, token: token })// la requête a été réussie
     } catch (err) {
         console.error(err)
         res.status(500).send({ message: "Erreur interne" })//le navigateur n'a pas pu être traitée pour une raison non identifiée
@@ -42,9 +42,9 @@ async function logUser(req, res) {
 }
 
 //on créée le token
-function createToken(email) {
+function createToken(email, userId) {
     const jwtPassword = process.env.JWT_PASSWORD// la chaîne secrète du mot de passe
-    return jwt.sign({ email: email }, jwtPassword, { expiresIn: "24h" })//retourne un nouveau token, et on definit la durée à 24heures
+    return jwt.sign({ email: email, userId: userId }, jwtPassword, { expiresIn: "24h" })//retourne un nouveau token, et on definit la durée à 24heures
 }
 
 module.exports = { createUser, logUser }
