@@ -41,8 +41,7 @@ function deleteSauce(req, res) {
     Product.findByIdAndDelete(id)
         .then((product) => {
             if (product == null) {
-                console.log("nothing to update")
-                res.status(404).send({ messsage: "Object not found in database" })
+                res.status(404).send({ messsage: "Produit introuvable dans le database" })
             }
             else if (product.userId != req.userId) {
                 res.status(403).send({ message: "pas autorisé" })
@@ -50,7 +49,6 @@ function deleteSauce(req, res) {
             else {
                 res.status(200).send(product)
                 deleteImage(product)
-                console.log("FILE DELETED", res)
             }
         })
         .catch((err) => res.status(500).send({ message: err }))// si ya un probleme fera un catch
@@ -68,24 +66,23 @@ function modifySauces(req, res) {
     Product.findByIdAndUpdate(id, payload)
         .then((product) => {
             if (product == null) {
-                console.log("nothing to update")
-                res.status(404).send({ messsage: "Object not found in database" })
+                console.log("Rien à mettre à jour")
+                res.status(404).send({ messsage: "Produit introuvable dans le database" })
             } else if (product.userId != req.userId) {
                 res.status(403).send({ message: "pas autorisé" })
             }
             else {
-                console.log("ALL GOOD UPDATING:", product) //si tout se passe bien
+                console.log("Bonne Mise à jour:", product) //si tout se passe bien
                 res.status(200).send(product)
                 deleteImage(product)
-                console.log("FILE DELETED")
+
             }
         })//une fois le produit trouve il est envoyé à une fonction
-        .catch((err) => console.error("PROBLEM UPDATING", err))
+        .catch((err) => console.error("Problème de mise à jour", err))
 }
 
 function deleteImage(product) {
     if (product == null) return
-    console.log("DELETE IMAGE", product)
     const imageToDelete = product.imageUrl.split("/").at(-1)//permet de sélectionner à partir de la derniere image avec .split et .at
     return unlink("images/" + imageToDelete)
 }
@@ -95,9 +92,9 @@ function makePayload(hasNewImage, req) {
     console.log("hasNewImage:", hasNewImage)
     if (!hasNewImage) return req.body //si il n'y a pas de nouvel image on renvoit req.body
     const payload = JSON.parse(req.body.sauce)
-    payload.imageUrl = makeImageUrl(req, req.file.fileName)
-    console.log("nouvelle image à gerer");
-    console.log("voici le payload:", payload)
+    /*payload.imageUrl = makeImageUrl(req, req.file.fileName)
+    console.log("nouvelle image à gérer");
+    console.log("voici le payload:", payload)*/
     return payload
 }
 
@@ -105,9 +102,9 @@ function makePayload(hasNewImage, req) {
 function sendClientResponse(product, res) {
     if (product == null) {
         console.log("nothing to update")
-        res.status(404).send({ messsage: "Object not found in database" })
+        res.status(404).send({ messsage: "Produit introuvable dans le database" })
     } else {
-        console.log("ALL GOOD UPDATING:", product) //si tout se passe bien
+        //console.log("ALL GOOD UPDATING:", product) //si tout se passe bien
         res.status(200).send(product)
     }
 }

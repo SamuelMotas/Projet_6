@@ -8,7 +8,7 @@ const db = process.env.DB_NAME
 const uri = `mongodb+srv://${username}:${password}@cluster0.mv7fhvj.mongodb.net/${db}`;
 
 
-mongoose.connect(uri).then(() => console.log("Connected to Mongo!")).catch(() => console.log("Error connecting to mongo: "))//permet d'être connecté à mongoDB
+mongoose.connect(uri).then(() => console.log("Connecté à Mongo!")).catch(() => console.log("Error connecting to mongo: "))//permet d'être connecté à mongoDB
 
 //on créé un schéma de données
 const userSchema = new mongoose.Schema({
