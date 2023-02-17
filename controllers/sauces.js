@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")//importe mongoose dans le fichier
 const { unlink } = require("fs/promises")
+const { likeSauce } = require("./like")
 
 //on créée le modele du produits
 const sauceSchema = new mongoose.Schema({
@@ -31,6 +32,7 @@ function getSauce(req, res) {
 function getSauceById(req, res) {
     getSauce(req, res)
         .then((product) => sendClientResponse(product, res))
+        .catch((err) => res.status(500).send(err))
 }
 
 //fonction qui supprime le produit de la base de données
@@ -137,21 +139,14 @@ function createSauces(req, res) {
     })
     product
         .save()
-        .then((message) => {
-            res.status(201).send({ message: message })
-            return console.log("produit enregistré", message)
-        }).catch(console.error)// enregistre le produit
+        .then((message) => res.status(201).send({ message: message }))
+        .catch((err) => res.status(500).send(err))// enregistre le produit
 }
 
-function likeSauce(req, res) {
-    getSauce(req, res)
-        .then((product) => {
-            console.log("the product to like is:", product)
-        })
-    const { userId } = req.body
-}
 
-module.exports = { getSauces, createSauces, getSauceById, deleteSauce, modifySauces, likeSauce }
+
+
+module.exports = { sendClientResponse, getSauce, getSauces, createSauces, getSauceById, deleteSauce, modifySauces, likeSauce }
 
 //supprime la base de données
 //Product.deleteMany({}).then(console.log).catch(console.error)
