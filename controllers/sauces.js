@@ -41,7 +41,8 @@ function deleteSauce(req, res) {
     Product.findByIdAndDelete(id)
         .then((product) => {
             if (product == null) {
-                res.status(404).send({ messsage: "Produit introuvable dans le database" })
+                console.log("nothing to update")
+                res.status(404).send({ messsage: "Produit introuvable  dans la database" })
             }
             else if (product.userId != req.userId) {
                 res.status(403).send({ message: "pas autorisé" })
@@ -49,6 +50,7 @@ function deleteSauce(req, res) {
             else {
                 res.status(200).send(product)
                 deleteImage(product)
+                console.log("FILE DELETED", res)
             }
         })
         .catch((err) => res.status(500).send({ message: err }))// si ya un probleme fera un catch
@@ -66,19 +68,16 @@ function modifySauces(req, res) {
     Product.findByIdAndUpdate(id, payload)
         .then((product) => {
             if (product == null) {
-                console.log("Rien à mettre à jour")
-                res.status(404).send({ messsage: "Produit introuvable dans le database" })
+                res.status(404).send({ messsage: "Produit introuvable dans la database" })
             } else if (product.userId != req.userId) {
                 res.status(403).send({ message: "pas autorisé" })
             }
             else {
-                console.log("Bonne Mise à jour:", product) //si tout se passe bien
                 res.status(200).send(product)
                 deleteImage(product)
-
             }
         })//une fois le produit trouve il est envoyé à une fonction
-        .catch((err) => console.error("Problème de mise à jour", err))
+        .catch((err) => console.error("PROBLEM UPDATING", err))
 }
 
 function deleteImage(product) {
@@ -89,22 +88,19 @@ function deleteImage(product) {
 
 //fonction qui fabrique un payload(charge utile)
 function makePayload(hasNewImage, req) {
-    console.log("hasNewImage:", hasNewImage)
     if (!hasNewImage) return req.body //si il n'y a pas de nouvel image on renvoit req.body
     const payload = JSON.parse(req.body.sauce)
-    /*payload.imageUrl = makeImageUrl(req, req.file.fileName)
-    console.log("nouvelle image à gérer");
-    console.log("voici le payload:", payload)*/
+    payload.imageUrl = makeImageUrl(req, req.file.fileName)
+    console.log("nouvelle image à gerer");
+    console.log("voici le payload:", payload)
     return payload
 }
 
 //fonction donnant une reponse au client en fonction de la database(db)
 function sendClientResponse(product, res) {
     if (product == null) {
-        console.log("nothing to update")
-        res.status(404).send({ messsage: "Produit introuvable dans le database" })
+        res.status(404).send({ messsage: "Produit introuvable dans la database" })
     } else {
-        //console.log("ALL GOOD UPDATING:", product) //si tout se passe bien
         res.status(200).send(product)
     }
 }
@@ -116,7 +112,7 @@ function makeImageUrl(req, filename) {
 
 function likeSauce(req, res) {
     const { like, userId } = req.body
-    if (![1, -1, 0].includes(like)) return res.status(403).send({ message: "Invalid like value" })
+    if (![1, -1, 0].includes(like)) return res.status(403).send({ message: "valeur similaire invalide" })
 
     getSauce(req, res)//il fait un get du product
         .then((product) => updateVote(product, like, userId, res))//ensuite il update
@@ -140,10 +136,10 @@ function resetVote(product, userId, res) {
         return Promise.reject("L'utilisateur ne semble pas avoir votés")
 
     if (usersLiked.includes(userId)) {
-        --product.likes
+        ++product.likes
         product.usersLiked = product.usersLiked.filter(id => id !== userId)
     } else {
-        --product.dislikes
+        ++product.dislikes
         product.usersDisliked = product.usersDisliked.filter(id => id !== userId)
     }
     return product

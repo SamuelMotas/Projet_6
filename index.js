@@ -1,11 +1,10 @@
 const { app, express } = require("./server")
 const port = 3000
 const path = require("path")
-const bodyParser = require("body-parser")
+
 
 // Connection to database
 require("./mongo")
-
 
 // Controllers
 const { createUser, logUser } = require("./controllers/users")
@@ -14,8 +13,6 @@ const { getSauces, createSauces, getSauceById, deleteSauce, modifySauces, likeSa
 // Middleware
 const { upload } = require("./middleware/multer")
 const { authenticateUser } = require("./middleware/auth")
-app.use(bodyParser.json())
-
 
 // Routes
 
