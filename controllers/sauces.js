@@ -91,8 +91,6 @@ function makePayload(hasNewImage, req) {
     if (!hasNewImage) return req.body //si il n'y a pas de nouvel image on renvoit req.body
     const payload = JSON.parse(req.body.sauce)
     payload.imageUrl = makeImageUrl(req, req.file.fileName)
-    console.log("nouvelle image à gerer");
-    console.log("voici le payload:", payload)
     return payload
 }
 
@@ -139,7 +137,7 @@ function resetVote(product, userId, res) {
         ++product.likes
         product.usersLiked = product.usersLiked.filter(id => id !== userId)
     } else {
-        ++product.dislikes
+        --product.dislikes
         product.usersDisliked = product.usersDisliked.filter(id => id !== userId)
     }
     return product
