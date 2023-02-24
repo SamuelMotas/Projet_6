@@ -18,7 +18,7 @@ const sauceSchema = new mongoose.Schema({
 })
 const Product = mongoose.model("Product", sauceSchema)
 
-//quand l'utilisateur est enregistré il peut aller dans la page add sauces et sélectionner son produit
+//quand l'utilisateur est enregistré  peut aller dans la page add sauces et sélectionner son produit
 function getSauces(req, res) {
     Product.find({}).then(products => res.send(products))
         .catch(error => res.status(500).send(error))

@@ -1,4 +1,5 @@
 // Database
+//Importation du package mongoose
 const mongoose = require("mongoose");// on importe monogoose dans le fichier
 const uniqueValidator = require("mongoose-unique-validator")// ameliore les messages d'erreur lors de l'enregistrement
 

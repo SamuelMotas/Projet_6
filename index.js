@@ -15,7 +15,7 @@ const { upload } = require("./middleware/multer")
 const { authenticateUser } = require("./middleware/auth")
 
 // Routes
-
+//chemin de L'API
 app.post("/api/auth/signup", createUser) //ajout de l'utilisateur à la base de données,
 app.post("/api/auth/login", logUser)//la route menant à l'utilisateur
 
@@ -25,7 +25,7 @@ app.get("/api/sauces/:id", authenticateUser, getSauceById)
 app.delete("/api/sauces/:id", authenticateUser, deleteSauce)
 app.put("/api/sauces/:id", authenticateUser, upload.single("image"), modifySauces)//  la route pour modifier 
 app.post("/api/sauces/:id/like", authenticateUser, likeSauce )
-app.get('/', (req, res) => res.send('Hello World!'))
+//app.get('/', (req, res) => res.send('Hello World!'))
 
 // Listen
 app.use("/images", express.static(path.join(__dirname, "images")))
