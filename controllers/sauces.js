@@ -137,7 +137,7 @@ function resetVote(product, userId, res) {
         ++product.likes
         product.usersLiked = product.usersLiked.filter(id => id !== userId)
     } else {
-        --product.dislikes
+        ++product.dislikes
         product.usersDisliked = product.usersDisliked.filter(id => id !== userId)
     }
     return product

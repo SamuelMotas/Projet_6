@@ -9,15 +9,16 @@ const db = process.env.DB_NAME
 const uri = `mongodb+srv://${username}:${password}@cluster0.mv7fhvj.mongodb.net/${db}`;
 
 
-mongoose.connect(uri).then(() => console.log("Connecté à Mongo!")).catch(() => console.log("Erreur de connexion à Mongo! "))//permet d'être connecté à mongoDB
+mongoose.connect(uri).then(() => console.log("Connecté à Mongo!"))
+    .catch(() => console.log("Erreur de connexion à Mongo! "))//permet d'être connecté à mongoDB
 
 //on créé un schéma de données
 const userSchema = new mongoose.Schema({
-    email: {type: String, required: true, unique: true},//contient les champs souhaités
-    password: {type: String, required: true,}
+    email: { type: String, required: true, unique: true },//contient les champs souhaités
+    password: { type: String, required: true, }
 })
 userSchema.plugin(uniqueValidator)
 
 const User = mongoose.model("User", userSchema)
 
-module.exports = {mongoose, User}//on exporte mongoose
+module.exports = { mongoose, User }//on exporte mongoose
