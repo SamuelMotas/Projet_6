@@ -6,10 +6,16 @@ const uniqueValidator = require("mongoose-unique-validator")// ameliore les mess
 const password = process.env.DB_PASSWORD
 const username = process.env.DB_USER
 const db = process.env.DB_NAME
-const uri = `mongodb+srv://${username}:${password}@cluster0.mv7fhvj.mongodb.net/${db}`;
+const adress= process.env.DB_ADRESS
+const uri = `mongodb+srv://${username}:${password}${adress}${db}`;
 
 
-mongoose.connect(uri).then(() => console.log("Connecté à Mongo!"))
+//connect à mongoDB
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+    .then(() => console.log("Connecté à Mongo!"))
     .catch(() => console.log("Erreur de connexion à Mongo! "))//permet d'être connecté à mongoDB
 
 //on créé un schéma de données

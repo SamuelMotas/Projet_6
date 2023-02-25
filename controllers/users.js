@@ -31,7 +31,7 @@ async function logUser(req, res) {
 
         const isPasswordOk = await bcrypt.compare(password, user.password)
         if (!isPasswordOk) {
-            res.status(400).send({ message: "Mot de passe incorect" })// bad request
+            res.status(401).send({ message: "Mot de passe incorect" })// bad request
         }
         const token = createToken(email, user._id)
         res.status(200).send({ userId: user._id, token: token })// la requête a été réussie
